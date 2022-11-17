@@ -11,8 +11,8 @@ const Header = () => {
                         <Navbar.Brand>YYShop</Navbar.Brand>
                     </LinkContainer>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                    <Navbar.Collapse id="basic-navbar-nav" style={{ flexGrow: 0 }}>
-                        <Nav>
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="ms-auto">
                             <LinkContainer to='/cart'>
                                 <Nav.Link >
                                     <i className='fas fa-shopping-cart'>
@@ -31,7 +31,7 @@ const Header = () => {
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
-        </header>
+        </header >
     );
 }
 
