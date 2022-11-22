@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Link, useLocation, useNavigate, useParams, } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, ListGroup, Image, Form, Button, Card } from 'react-bootstrap';
 import Message from '../components/Message';
@@ -9,15 +9,14 @@ const CartScreen = () => {
     const { id } = useParams();
     const productId = id;
 
-    const { search } = useLocation();
-    const searchParams = new URLSearchParams(search); // /search?category=Shirts
-    const qty = parseInt(searchParams.get('qty')) || 0;
+    const { location } = useLocation();
+    const searchParams = new URLSearchParams(location);// /search?category=Shirts
+    const qty = searchParams.get('qty') || 0;
 
     const dispatch = useDispatch();
 
     const cart = useSelector(state => state.cart);
     const { cartItems } = cart;
-
 
     useEffect(() => {
         if (productId) {
@@ -29,10 +28,19 @@ const CartScreen = () => {
         dispatch(removeFromCart(id));
     }
 
+    const userLogin = useSelector((state) => state.userLogin)
+    const { userInfo } = userLogin
+
     const navigate = useNavigate();
     const checkoutHandler = () => {
-        navigate('/login?redirect=shipping');
+        if (userInfo) {
+            navigate('/shipping')
+        } else {
+            navigate('/login')
+        }
     }
+
+
 
     return (
         <>
