@@ -11,7 +11,7 @@ const CartScreen = () => {
 
     const { location } = useLocation();
     const searchParams = new URLSearchParams(location);// /search?category=Shirts
-    const qty = searchParams.get('qty') || 0;
+    const qty = searchParams.get('qty') || 1;
 
     const dispatch = useDispatch();
 
@@ -91,6 +91,8 @@ const CartScreen = () => {
                     <Card>
                         <ListGroup variant='flush'>
                             <ListGroup.Item>
+                                {console.log(cartItems.reduce((acc, item) => acc + item.qty * item.price, 0).toFixed(2))}
+                                {console.log(cartItems)}
                                 <h2>Subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)}) items</h2>
                                 ${cartItems.reduce((acc, item) => acc + item.qty * item.price, 0).toFixed(2)}
                             </ListGroup.Item>

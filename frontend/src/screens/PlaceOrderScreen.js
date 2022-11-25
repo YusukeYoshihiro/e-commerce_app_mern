@@ -58,26 +58,26 @@ const PlaceOrderScreen = () => {
                         <ListGroup.Item>
                             <h2>Shipping</h2>
                             <p>
-                                <strong>Address:</strong>
+                                <strong>Address: </strong>
                                 {cart.shippingAddress.address},
                                 {cart.shippingAddress.city},
                                 {cart.shippingAddress.postalCode},
-                                {cart.shippingAddress.country},
+                                {cart.shippingAddress.country}
                             </p>
                         </ListGroup.Item>
 
                         <ListGroup.Item>
                             <h2>Payment Method</h2>
-                            <strong>Method:</strong>
+                            <strong>Method: </strong>
                             {cart.paymentMethod}
                         </ListGroup.Item>
 
                         <ListGroup.Item>
                             <h2>Order Items</h2>
-                            {cart.cartItems.length === 0 ? <Message>your cart is empty</Message> : (
+                            {cart.cartItems.length === 0 ? <Message>Your cart is empty</Message> : (
                                 <ListGroup variant='flush'>
                                     {cart.cartItems.map((item, index) => (
-                                        <ListGroup.Item>
+                                        <ListGroup.Item key={index}>
                                             <Row>
                                                 <Col md={1}>
                                                     <Image
