@@ -15,6 +15,7 @@ import ShippingScreen from './screens/ShippingScreen';
 import PaymentScreen from './screens/PaymentScreen';
 import PlaceOrderScreen from './screens/PlaceOrderScreen';
 import OrderScreen from './screens/OrderScreen';
+import OrderSuccessScreen from './screens/OrderSuccessScreen';
 
 const App = () => {
   const [clientID, setClientID] = useState('');
@@ -55,6 +56,10 @@ const App = () => {
                   <Route path='/cart'>
                     <Route index element={<CartScreen />} />
                     <Route path=':id' element={<CartScreen />} />
+                  </Route>
+                  <Route exact path="/order/" component={<OrderSuccessScreen />} >
+                    <Route index element={<OrderSuccessScreen />} />
+                    <Route path=':id' element={<OrderSuccessScreen />} />
                   </Route>
                   {/* <Route path='/cart/:id?' element={<CartScreen />} /> */}
                 </Routes>

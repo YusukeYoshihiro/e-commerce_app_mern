@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 // import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { Row, Col, ListGroup, Image, Card } from 'react-bootstrap';
+import { Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import {
@@ -12,6 +12,10 @@ import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { getOrderDetails, payOrder } from '../actions/orderActions';
 import { ORDER_PAY_REST } from '../constants/orderConstants';
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from '@stripe/react-stripe-js';
+import { CardElement } from '@stripe/react-stripe-js';
+const stripePromise = loadStripe(`${process.env.REACT_APP_STRIPE_PUB_KEY}`);
 
 
 const OrderScreen = () => {
@@ -61,6 +65,24 @@ const OrderScreen = () => {
         });
     };
 
+    // For Stripe Checkout
+    const stripeCheckoutHandler = async () => {
+        console.log('stripeCheckoutHandler');
+
+        const stripe = await stripePromise;
+        const response = await fetch("/api/stripe/create-checkout-session", {
+            method: "POST",
+        });
+        console.log('response', response);
+        const session = await response.json();
+        console.log('session', session);
+
+        // When the customer clicks on the button, redirect them to Checkout.
+        const result = await stripe.redirectToCheckout({ sessionId: session.id });
+        if (result.error) {
+            alert(result.error.message);
+        }
+    }
 
     return loading ? <Loader /> : error ? <Message variant='danger'>{error}</Message> : <>
         <h1>Order: {order._id}</h1>
@@ -163,7 +185,8 @@ const OrderScreen = () => {
                             </Row>
                         </ListGroup.Item>
 
-                        {!order.isPaid && (
+                        {!order.isPaid &&
+                            order.paymentMethod === 'Paypal' ?
                             <ListGroup.Item>
                                 {loadingPay && <Loader />}
                                 {isPending && <Loader />}
@@ -177,7 +200,38 @@ const OrderScreen = () => {
                                     />
                                 )}
                             </ListGroup.Item>
-                        )}
+                            : <ListGroup.Item>
+                                <h2>Stripe</h2>
+                                {/* <Payment order={order} totalPrice={order.totalPrice} handleClick={handleClick} /> */}
+                                <Button
+                                    type="button"
+                                    className="btn btn-primary btn-block"
+                                    disabled={order.orderItems === 0}
+                                    onClick={stripeCheckoutHandler}
+                                    role="link"
+                                >
+                                    Pay ${order.totalPrice}
+                                </Button>
+
+                                <Elements stripe={stripePromise}>
+                                    <CardElement
+                                        options={{
+                                            style: {
+                                                base: {
+                                                    fontSize: '16px',
+                                                    color: '#424770',
+                                                    '::placeholder': {
+                                                        color: '#aab7c4'
+                                                    }
+                                                },
+                                                invalid: {
+                                                    color: '#9e2146'
+                                                }
+                                            }
+                                        }}
+                                    />
+                                </Elements>
+                            </ListGroup.Item>}
                     </ListGroup>
                 </Card>
             </Col>
