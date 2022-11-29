@@ -13,22 +13,22 @@ router.post('/create-checkout-session', asyncHandler(async (req, res) => {
 
     const order = await Order.findById(orderId);
     const lineItems = order.orderItems.map((item) => ({
-        price_data: {
-            currency: 'cad',
-            product_data: {
-                name: item.name,
-            },
-            unit_amount: item.price * 100,
-        },
-        quantity: item.qty,
+        // price_data: {
+        //     currency: 'cad',
+        //     product_data: {
+        //         name: item.name,
+        //     },
+        //     unit_amount: item.price * 100,
+        // },
+        // quantity: item.qty,
     }))
     if (order) {
         const session = await stripe.checkout.sessions.create({
-            payment_method_types: ['card'],
-            mode: 'payment',
-            success_url: `${baseUrl}/success`,
-            cancel_url: baseUrl,
-            line_items: lineItems,
+            // payment_method_types: ['card'],
+            // mode: 'payment',
+            // success_url: `${baseUrl}/success`,
+            // cancel_url: baseUrl,
+            // line_items: lineItems,
         });
 
         res.json({ id: session.id });
