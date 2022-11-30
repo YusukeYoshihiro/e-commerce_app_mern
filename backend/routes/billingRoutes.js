@@ -3,12 +3,12 @@ import express from 'express';
 import Order from '../models/orderModel.js';
 import asyncHandler from 'express-async-handler';
 import Stripe from 'stripe';
-
 import dotenv from 'dotenv';
-dotenv.config();
 
-const stripe = Stripe(`${process.env.STRIPE_SECRET_KEY}`);
 const router = express.Router();
+
+dotenv.config();
+const stripe = Stripe(`${process.env.STRIPE_SECRET_KEY}`);
 
 router.post('/create-checkout-session', asyncHandler(async (req, res) => {
     const baseUrl = res.req.headers.referer;
