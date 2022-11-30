@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-// import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,11 +11,10 @@ import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { getOrderDetails, payOrder } from '../actions/orderActions';
 import { ORDER_PAY_REST } from '../constants/orderConstants';
-import { loadStripe } from "@stripe/stripe-js";
-import { Elements } from '@stripe/react-stripe-js';
-import { CardElement } from '@stripe/react-stripe-js';
-const stripePromise = loadStripe(`${process.env.REACT_APP_STRIPE_PUB_KEY}`);
+import { loadStripe } from '@stripe/stripe-js';
 
+// stripe init
+const stripePromise = loadStripe(`pk_test_51HCEftK0gTkqzdS7ZbzYvvTmzm726Wl3cS0Fdc4kRFxQLFESjcycbPvDRto9IkrGvbZFKdZI66FOErRb3ZMNy9wu00fx4h8SjY`);
 
 const OrderScreen = () => {
     const { id } = useParams();
@@ -65,17 +63,12 @@ const OrderScreen = () => {
         });
     };
 
-    // For Stripe Checkout
-    const stripeCheckoutHandler = async () => {
-        console.log('stripeCheckoutHandler');
-
+    const redirectToCheckout = async () => {
         const stripe = await stripePromise;
         const response = await fetch("/api/stripe/create-checkout-session", {
             method: "POST",
         });
-        console.log('response', response);
         const session = await response.json();
-        console.log('session', session);
 
         // When the customer clicks on the button, redirect them to Checkout.
         const result = await stripe.redirectToCheckout({ sessionId: session.id });
@@ -185,8 +178,7 @@ const OrderScreen = () => {
                             </Row>
                         </ListGroup.Item>
 
-                        {!order.isPaid &&
-                            order.paymentMethod === 'Paypal' ?
+                        {!order.isPaid && order.paymentMethod === 'PayPal' ?
                             <ListGroup.Item>
                                 {loadingPay && <Loader />}
                                 {isPending && <Loader />}
@@ -207,30 +199,12 @@ const OrderScreen = () => {
                                     type="button"
                                     className="btn btn-primary btn-block"
                                     disabled={order.orderItems === 0}
-                                    onClick={stripeCheckoutHandler}
+                                    onClick={redirectToCheckout}
                                     role="link"
+                                    style={{ width: '100%' }}
                                 >
                                     Pay ${order.totalPrice}
                                 </Button>
-
-                                <Elements stripe={stripePromise}>
-                                    <CardElement
-                                        options={{
-                                            style: {
-                                                base: {
-                                                    fontSize: '16px',
-                                                    color: '#424770',
-                                                    '::placeholder': {
-                                                        color: '#aab7c4'
-                                                    }
-                                                },
-                                                invalid: {
-                                                    color: '#9e2146'
-                                                }
-                                            }
-                                        }}
-                                    />
-                                </Elements>
                             </ListGroup.Item>}
                     </ListGroup>
                 </Card>

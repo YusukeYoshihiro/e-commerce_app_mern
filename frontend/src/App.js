@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
+import '@stripe/stripe-js';
 import axios from 'axios';
 import { PayPalScriptProvider } from '@paypal/react-paypal-js';
 import Header from './components/Header';
@@ -45,6 +46,7 @@ const App = () => {
                   <Route path='/order'>
                     <Route index element={<OrderScreen />} />
                     <Route path=':id' element={<OrderScreen />} />
+                    <Route path=':id/orderSuccess' element={<OrderSuccessScreen />} />
                   </Route>
                   <Route path='/shipping' element={<ShippingScreen />} />
                   <Route path='/payment' element={<PaymentScreen />} />
