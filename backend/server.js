@@ -4,7 +4,7 @@ import connectDB from './config/db.js';
 import productRoutes from './routes/productRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
-import billingRoutes from './routes/billingRoutes.js'
+import billingRoutes from './routes/billingRoutes.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js'
 
 dotenv.config();
