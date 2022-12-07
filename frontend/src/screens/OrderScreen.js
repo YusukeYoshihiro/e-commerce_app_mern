@@ -12,11 +12,14 @@ import Message from '../components/Message';
 import { getOrderDetails, payOrder } from '../actions/orderActions';
 import { ORDER_PAY_REST } from '../constants/orderConstants';
 import { loadStripe } from '@stripe/stripe-js';
-
+// import dotenv from 'dotenv';
+// dotenv.config();
 // stripe init
-const stripePromise = loadStripe(`pk_test_51HCEftK0gTkqzdS7ZbzYvvTmzm726Wl3cS0Fdc4kRFxQLFESjcycbPvDRto9IkrGvbZFKdZI66FOErRb3ZMNy9wu00fx4h8SjY`);
+// const stripePromise = loadStripe(`${process.env.REACT_APP_STRIPE_PUB_KEY}`);
 
+const stripePromise = loadStripe(`${process.env.REACT_APP_STRIPE_PUB_KEY}`);
 const OrderScreen = () => {
+
     const { id } = useParams();
     const dispatch = useDispatch();
 
@@ -39,10 +42,12 @@ const OrderScreen = () => {
     }
 
     useEffect(() => {
+
         if (!order || order._id !== id || successPay) {
             dispatch({ type: ORDER_PAY_REST });
             dispatch(getOrderDetails(id));
         }
+
     }, [dispatch, order, id, successPay]);
 
     // For paypal 'createOrder'
@@ -63,7 +68,7 @@ const OrderScreen = () => {
         });
     };
 
-    const redirectToCheckout = async () => {
+    const redirectToCheckout = async (data, actions) => {
         const stripe = await stripePromise;
         const response = await fetch("/api/stripe/create-checkout-session", {
             method: "POST",
@@ -74,6 +79,7 @@ const OrderScreen = () => {
         const result = await stripe.redirectToCheckout({ sessionId: session.id });
         if (result.error) {
             alert(result.error.message);
+            console.log(result.error.message);
         }
     }
 
@@ -178,7 +184,7 @@ const OrderScreen = () => {
                             </Row>
                         </ListGroup.Item>
 
-                        {!order.isPaid && order.paymentMethod === 'PayPal' ?
+                        {!order.isPaid && order.paymentMethod === 'PayPal' ? (
                             <ListGroup.Item>
                                 {loadingPay && <Loader />}
                                 {isPending && <Loader />}
@@ -191,10 +197,10 @@ const OrderScreen = () => {
                                         onApprove={successPaymentHandler}
                                     />
                                 )}
-                            </ListGroup.Item>
-                            : <ListGroup.Item>
+                            </ListGroup.Item>) : (null)}
+                        {!order.isPaid && order.paymentMethod === 'Stripe' ? (
+                            <ListGroup.Item>
                                 <h2>Stripe</h2>
-                                {/* <Payment order={order} totalPrice={order.totalPrice} handleClick={handleClick} /> */}
                                 <Button
                                     type="button"
                                     className="btn btn-primary btn-block"
@@ -205,7 +211,7 @@ const OrderScreen = () => {
                                 >
                                     Pay ${order.totalPrice}
                                 </Button>
-                            </ListGroup.Item>}
+                            </ListGroup.Item>) : (null)}
                     </ListGroup>
                 </Card>
             </Col>
