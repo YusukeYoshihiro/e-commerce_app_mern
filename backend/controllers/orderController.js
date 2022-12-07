@@ -1,7 +1,6 @@
 import asyncHandler from 'express-async-handler';
 import Order from '../models/orderModel.js';
 
-
 /**
  * @desc    Create new order
  * @route   POST /api/orders
@@ -86,5 +85,17 @@ const updateOrderToPaid = asyncHandler(asyncHandler(async (req, res) => {
     }
 }));
 
-export { addOrderItems, getOrderById, updateOrderToPaid }
+/**
+ * @desc    Get logged in user orders
+ * @route   GET /api/orders/myorders
+ * @access  Private
+ */
+const getMyOrders = asyncHandler(asyncHandler(async (req, res) => {
+    const orders = await Order.find({ user: req.user._id });
+
+    res.json(orders);
+
+}));
+
+export { addOrderItems, getOrderById, updateOrderToPaid, getMyOrders }
 
