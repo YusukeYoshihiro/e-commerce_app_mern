@@ -44,7 +44,7 @@ router.post('/create-checkout-session', asyncHandler(async (req, res) => {
         });
         console.log(session);
 
-        if (session.id) {
+        if (session.id && session.url) {
             order.isPaid = true;
             order.paidAt = Date.now();
             order.paymentResult = {
