@@ -17,6 +17,7 @@ import PaymentScreen from './screens/PaymentScreen';
 import PlaceOrderScreen from './screens/PlaceOrderScreen';
 import OrderScreen from './screens/OrderScreen';
 import OrderSuccessScreen from './screens/OrderSuccessScreen';
+import UserListScreen from './screens/UserListScreen';
 
 const App = () => {
   const [clientID, setClientID] = useState('');
@@ -63,7 +64,7 @@ const App = () => {
                     <Route index element={<OrderSuccessScreen />} />
                     <Route path=':id' element={<OrderSuccessScreen />} />
                   </Route>
-                  {/* <Route path='/cart/:id?' element={<CartScreen />} /> */}
+                  <Route path='/admin/userList' element={<UserListScreen />} />
                 </Routes>
               </Container>
             </main>
