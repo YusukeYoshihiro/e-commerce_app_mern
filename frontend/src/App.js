@@ -18,6 +18,7 @@ import PlaceOrderScreen from './screens/PlaceOrderScreen';
 import OrderScreen from './screens/OrderScreen';
 import OrderSuccessScreen from './screens/OrderSuccessScreen';
 import UserListScreen from './screens/UserListScreen';
+import UserEditScreen from './screens/UserEditScreen';
 
 const App = () => {
   const [clientID, setClientID] = useState('');
@@ -65,6 +66,7 @@ const App = () => {
                     <Route path=':id' element={<OrderSuccessScreen />} />
                   </Route>
                   <Route path='/admin/userList' element={<UserListScreen />} />
+                  <Route path='/admin/user/:id/edit' element={<UserEditScreen />} />
                 </Routes>
               </Container>
             </main>
