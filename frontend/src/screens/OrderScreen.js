@@ -2,20 +2,16 @@ import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import {
     PayPalButtons,
     usePayPalScriptReducer
 } from '@paypal/react-paypal-js';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
-import { getOrderDetails, payOrder } from '../actions/orderActions';
-import { ORDER_PAY_REST } from '../constants/orderConstants';
+import { getOrderDetails, payOrder, deliverOrder } from '../actions/orderActions';
+import { ORDER_PAY_REST, ORDER_DELIVER_RESET } from '../constants/orderConstants';
 import { loadStripe } from '@stripe/stripe-js';
-// import dotenv from 'dotenv';
-// dotenv.config();
-// stripe init
-// const stripePromise = loadStripe(`${process.env.REACT_APP_STRIPE_PUB_KEY}`);
 
 const stripePromise = loadStripe(`${process.env.REACT_APP_STRIPE_PUB_KEY}`);
 const OrderScreen = () => {
@@ -29,6 +25,12 @@ const OrderScreen = () => {
     const orderPay = useSelector(state => state.orderPay);
     const { loading: loadingPay, success: successPay } = orderPay;
 
+    const orderDeliver = useSelector(state => state.orderDeliver);
+    const { loading: loadingDeliver, success: successDeliver } = orderDeliver;
+
+    const userLogin = useSelector(state => state.userLogin);
+    const { userInfo } = userLogin;
+
     const [{ isPending, isResolved, isRejected }] = usePayPalScriptReducer();
 
     if (!loading) {
@@ -41,14 +43,19 @@ const OrderScreen = () => {
         ));
     }
 
+    const navigate = useNavigate();
     useEffect(() => {
+        if (!userInfo) {
+            navigate('login')
+        }
 
-        if (!order || order._id !== id || successPay) {
+        if (!order || order._id !== id || successPay || successDeliver) {
             dispatch({ type: ORDER_PAY_REST });
+            dispatch({ type: ORDER_DELIVER_RESET });
             dispatch(getOrderDetails(id));
         }
 
-    }, [dispatch, order, id, successPay]);
+    }, [dispatch, order, id, successPay, successDeliver, navigate, userInfo]);
 
     // For paypal 'createOrder'
     const createOrder = (data, actions) => {
@@ -68,6 +75,7 @@ const OrderScreen = () => {
         });
     };
 
+    // For stripe
     const redirectToCheckout = async (data, actions) => {
         const stripe = await stripePromise;
         const response = await fetch("/api/stripe/create-checkout-session", {
@@ -81,6 +89,10 @@ const OrderScreen = () => {
             alert(result.error.message);
             console.log(result.error.message);
         }
+    }
+
+    const deliverHandler = () => {
+        dispatch(deliverOrder(order));
     }
 
     return loading ? <Loader /> : error ? <Message variant='danger'>{error}</Message> : <>
@@ -198,6 +210,7 @@ const OrderScreen = () => {
                                     />
                                 )}
                             </ListGroup.Item>) : (null)}
+
                         {!order.isPaid && order.paymentMethod === 'Stripe' ? (
                             <ListGroup.Item>
                                 <h2>Stripe</h2>
@@ -212,6 +225,19 @@ const OrderScreen = () => {
                                     Pay ${order.totalPrice}
                                 </Button>
                             </ListGroup.Item>) : (null)}
+                        {loadingDeliver && <Loader />}
+                        {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+                            <ListGroup.Item>
+                                <Button
+                                    type='button'
+                                    className='btn btn-block'
+                                    style={{ width: '100%' }}
+                                    onClick={deliverHandler}
+                                >
+                                    Mark As Delivered
+                                </Button>
+                            </ListGroup.Item>
+                        )}
                     </ListGroup>
                 </Card>
             </Col>
