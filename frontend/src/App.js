@@ -48,6 +48,7 @@ const App = () => {
               <Container>
                 <Routes>
                   <Route path='/' element={<HomeScreen />} />
+                  <Route path='/search/:keyword' element={<HomeScreen />} exact />
                   <Route path='/order'>
                     <Route index element={<OrderScreen />} />
                     <Route path=':id' element={<OrderScreen />} />

@@ -149,7 +149,7 @@ const ProductScreen = () => {
                                 </Card>
                             </Col>
                         </Row>
-                        <Row md={6}>
+                        <Row md={2}>
                             <Col>
                                 <h2>Reviews</h2>
                                 {product.reviews.length === 0 && <Message>No Reviews</Message>}
