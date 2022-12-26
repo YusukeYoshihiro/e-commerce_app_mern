@@ -76,7 +76,7 @@ const OrderScreen = () => {
     };
 
     // For stripe
-    const redirectToCheckout = async (data, actions) => {
+    const redirectToCheckout = async () => {
         const stripe = await stripePromise;
         const response = await fetch("/api/stripe/create-checkout-session", {
             method: "POST",

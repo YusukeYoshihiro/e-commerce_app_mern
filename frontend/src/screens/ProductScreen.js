@@ -211,7 +211,8 @@ const ProductScreen = () => {
                             </Col>
                         </Row>
                     </>
-                )}
+                )
+            }
         </>
     )
 }
