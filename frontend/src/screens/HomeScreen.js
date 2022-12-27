@@ -1,13 +1,12 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Meta from '../components/Meta';
-import { Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { Row, Col } from 'react-bootstrap';
 import Product from '../components/Product';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import { listProducts } from '../actions/productActions';
-import { useParams } from 'react-router';
 import Paginate from '../components/Paginate';
 import ProductCarousel from '../components/ProductCarousel';
 
@@ -47,7 +46,7 @@ const HomeScreen = () => {
           <Row>
             {products.map(product => (
               <Col key={product._id} sm={12} md={6} xl={3}>
-                <Product product={product} />
+                <Product key={product._id} product={product} />
               </Col>
             ))}
           </Row>

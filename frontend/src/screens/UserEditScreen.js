@@ -6,7 +6,8 @@ import Message from '../components/Message';
 import Loader from '../components/Loader';
 import FormContainer from '../components/FormContainer';
 import { getUserDetails, updateUser } from '../actions/userActions';
-import { USER_UPDATE_RESET } from '../constants/userConstants';
+// import { USER_UPDATE_RESET } from '../constants/userConstants';
+import { user_update_reset } from '../reducers/userReducers/userUpdateSlice'
 
 
 const UserEditScreen = () => {
@@ -37,7 +38,8 @@ const UserEditScreen = () => {
 
     useEffect(() => {
         if (successUpdate) {
-            dispatch({ type: USER_UPDATE_RESET })
+            // dispatch({ type: USER_UPDATE_RESET })
+            dispatch(user_update_reset());
             navigate('/admin/userList');
         } else {
             if (!user.name || user._id !== userId) {

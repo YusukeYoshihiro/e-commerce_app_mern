@@ -53,7 +53,8 @@ router.post('/create-checkout-session', asyncHandler(async (req, res) => {
                 update_time: order.updatedAt,
                 email_address: session.customer_email,
             }
-            const updateOrder = await order.save();
+            // update order 
+            await order.save();
         }
 
         res.json({ id: session.id });

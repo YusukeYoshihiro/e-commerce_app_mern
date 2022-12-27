@@ -10,7 +10,10 @@ import {
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { getOrderDetails, payOrder, deliverOrder } from '../actions/orderActions';
-import { ORDER_PAY_REST, ORDER_DELIVER_RESET } from '../constants/orderConstants';
+// import { ORDER_PAY_REST, ORDER_DELIVER_RESET } from '../constants/orderConstants';
+import { order_pay_reset } from '../reducers/orderReducers/orderPaySlice'
+import { order_deliver_reset } from '../reducers/orderReducers/orderDeliverSlice'
+
 import { loadStripe } from '@stripe/stripe-js';
 
 const stripePromise = loadStripe(`${process.env.REACT_APP_STRIPE_PUB_KEY}`);
@@ -33,15 +36,10 @@ const OrderScreen = () => {
 
     const [{ isPending, isResolved, isRejected }] = usePayPalScriptReducer();
 
-    if (!loading) {
-        const addDecimals = (num) => {
-            return (Math.round(num * 100) / 100).toFixed(2)
-        };
-        order.itemsPrice = addDecimals(order.orderItems.reduce((acc, item) =>
-            acc + item.price * item.qty,
-            0
-        ));
-    }
+    // Adding decimal for Order Summary Item(calculate itemsPrice)
+    const addDecimals = (num) => {
+        return (Math.round(num * 100) / 100).toFixed(2)
+    };
 
     const navigate = useNavigate();
     useEffect(() => {
@@ -50,12 +48,14 @@ const OrderScreen = () => {
         }
 
         if (!order || order._id !== id || successPay || successDeliver) {
-            dispatch({ type: ORDER_PAY_REST });
-            dispatch({ type: ORDER_DELIVER_RESET });
+            dispatch(order_pay_reset())
+            dispatch(order_deliver_reset())
+            // dispatch({ type: ORDER_PAY_REST });
+            // dispatch({ type: ORDER_DELIVER_RESET });
             dispatch(getOrderDetails(id));
         }
 
-    }, [dispatch, order, id, successPay, successDeliver, navigate, userInfo]);
+    }, [dispatch, order, id, successPay, successDeliver, navigate, userInfo, loading]);
 
     // For paypal 'createOrder'
     const createOrder = (data, actions) => {
@@ -76,7 +76,7 @@ const OrderScreen = () => {
     };
 
     // For stripe
-    const redirectToCheckout = async (data, actions) => {
+    const redirectToCheckout = async () => {
         const stripe = await stripePromise;
         const response = await fetch("/api/stripe/create-checkout-session", {
             method: "POST",
@@ -174,7 +174,11 @@ const OrderScreen = () => {
                         <ListGroup.Item>
                             <Row>
                                 <Col>Items</Col>
-                                <Col>${order.itemsPrice}</Col>
+                                <Col>${
+                                    addDecimals(order.orderItems.reduce((acc, item) =>
+                                        acc + item.price * item.qty,
+                                        0
+                                    ))}</Col>
                             </Row>
                         </ListGroup.Item>
                         <ListGroup.Item>

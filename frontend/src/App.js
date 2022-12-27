@@ -16,7 +16,7 @@ import ShippingScreen from './screens/ShippingScreen';
 import PaymentScreen from './screens/PaymentScreen';
 import PlaceOrderScreen from './screens/PlaceOrderScreen';
 import OrderScreen from './screens/OrderScreen';
-import OrderSuccessScreen from './screens/OrderSuccessScreen';
+// import OrderSuccessScreen from './screens/OrderSuccessScreen';
 import UserListScreen from './screens/UserListScreen';
 import UserEditScreen from './screens/UserEditScreen';
 import ProductListScreen from './screens/ProductListScreen';
@@ -54,23 +54,27 @@ const App = () => {
                   <Route path='/order'>
                     <Route index element={<OrderScreen />} />
                     <Route path=':id' element={<OrderScreen />} />
-                    <Route path=':id/orderSuccess' element={<OrderSuccessScreen />} />
+                    {/* <Route path=':id/orderSuccess' element={<OrderSuccessScreen />} /> */}
                   </Route>
-                  <Route path='/shipping' element={<ShippingScreen />} />
+                  <Route path='/shipping' element={<ShippingScreen />} /> d
                   <Route path='/payment' element={<PaymentScreen />} />
                   <Route path='/palceorder' element={<PlaceOrderScreen />} />
                   <Route path='/login' element={<LoginScreen />} />
                   <Route path='/register' element={<RegisterScreen />} />
                   <Route path='/profile' element={<ProfileScreen />} />
-                  <Route path='/product/:id' element={<ProductScreen />} />
+                  {/* <Route path='/product/:id' element={<ProductScreen />} /> */}
+                  <Route path='/product'>
+                    <Route index element={<ProductScreen />} />
+                    <Route path=':id' element={<ProductScreen />} />
+                  </Route>
                   <Route path='/cart'>
                     <Route index element={<CartScreen />} />
                     <Route path=':id' element={<CartScreen />} />
                   </Route>
-                  <Route exact path="/order/" component={<OrderSuccessScreen />} >
+                  {/* <Route exact path="/order/" component={<OrderSuccessScreen />} >
                     <Route index element={<OrderSuccessScreen />} />
                     <Route path=':id' element={<OrderSuccessScreen />} />
-                  </Route>
+                  </Route> */}
                   <Route path='/admin/userList' element={<UserListScreen />} />
                   <Route path='/admin/user/:id/edit' element={<UserEditScreen />} />
                   <Route path='/admin/productList' element={<ProductListScreen />} />
