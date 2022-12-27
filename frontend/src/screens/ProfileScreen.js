@@ -6,7 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import { getUserDetails, updateUserProfile } from '../actions/userActions';
-import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants';
+// import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants';
+import { update_profile_reset } from '../reducers/userReducers/userUpdateProfileSlice'
 import { listMyOrders } from '../actions/orderActions';
 
 const ProfileScreen = () => {
@@ -37,7 +38,8 @@ const ProfileScreen = () => {
             navigate('/login');
         } else {
             if (!user || !user.name || success) {
-                dispatch({ type: USER_UPDATE_PROFILE_RESET });
+                // dispatch({ type: USER_UPDATE_PROFILE_RESET });
+                dispatch(update_profile_reset());
                 dispatch(getUserDetails('profile'))
                 dispatch(listMyOrders());
             } else {

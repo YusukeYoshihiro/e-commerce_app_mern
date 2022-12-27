@@ -1,14 +1,14 @@
 import { useEffect } from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Table, Button, Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import { listProducts, deleteProduct, createProduct } from '../actions/productActions';
-import { PRODUCT_CREATE_RESET } from '../constants/productConstants';
+// import { PRODUCT_CREATE_RESET } from '../constants/productConstants';
+import { product_create_reset } from '../reducers/productReducers/productCreateSlice'
 import Paginate from '../components/Paginate';
-import { useParams } from 'react-router';
 
 
 const ProductListScreen = () => {
@@ -41,7 +41,8 @@ const ProductListScreen = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        dispatch({ type: PRODUCT_CREATE_RESET })
+        // dispatch({ type: PRODUCT_CREATE_RESET })
+        dispatch(product_create_reset())
         if (!userInfo.isAdmin) {
             navigate('/login')
         }

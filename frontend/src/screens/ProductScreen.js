@@ -8,7 +8,8 @@ import {
     listProductDetails,
     createProductReview,
 } from '../actions/productActions';
-import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants';
+// import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants';
+import { product_create_review_reset } from '../reducers/productReducers/productReviewCreateSlice'
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import Meta from '../components/Meta';
@@ -40,7 +41,8 @@ const ProductScreen = () => {
             alert('Review Submitted!');
             setRating(0);
             setComment('');
-            dispatch({ type: PRODUCT_CREATE_REVIEW_RESET })
+            // dispatch({ type: PRODUCT_CREATE_REVIEW_RESET });
+            dispatch(product_create_review_reset());
         }
         dispatch(listProductDetails(productId))
     }, [dispatch, productId, successProductReview]);

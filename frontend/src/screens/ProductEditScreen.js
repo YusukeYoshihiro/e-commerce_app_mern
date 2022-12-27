@@ -6,7 +6,8 @@ import Message from '../components/Message';
 import Loader from '../components/Loader';
 import FormContainer from '../components/FormContainer';
 import { listProductDetails, updateProduct } from '../actions/productActions';
-import { PRODUCT_UPDATE_RESET } from '../constants/productConstants';
+// import { PRODUCT_UPDATE_RESET } from '../constants/productConstants';
+import { product_update_reset } from '../reducers/productReducers/productUpdateSlice'
 import axios from 'axios';
 
 const ProductEditScreen = () => {
@@ -42,7 +43,8 @@ const ProductEditScreen = () => {
 
     useEffect(() => {
         if (successUpdate) {
-            dispatch({ type: PRODUCT_UPDATE_RESET });
+            // dispatch({ type: PRODUCT_UPDATE_RESET });
+            dispatch(product_update_reset());
             navigate('/admin/productList')
         } else {
             if (!product.name || product._id !== productId) {
