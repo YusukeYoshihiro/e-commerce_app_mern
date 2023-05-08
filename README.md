@@ -6,7 +6,7 @@
 
 ```
 • Admin デモ用　アカウント
-email: test@test.com
+email: admin@example.com
 passwod: 123456
 ```
 
