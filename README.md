@@ -4,6 +4,12 @@
 
 <img width='650' src="https://user-images.githubusercontent.com/58486430/236671819-748e4f15-f885-4477-b6e4-cccd5a7a0b8b.png">
 
+```
+• Admin デモ用　アカウント
+email: test@test.com
+passwod: 123456
+```
+
 ### 主要機能
   - Authentication
     - メール認証
