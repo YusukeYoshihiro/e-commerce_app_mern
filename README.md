@@ -8,6 +8,10 @@
 • Admin デモ用　アカウント
 email: admin@example.com
 passwod: 123456
+
+• PayPal(決済) テスト用　アカウント
+Email(ID): sb-r747ra14676507@business.example.com 
+passwod: 7OX.Lsi.
 ```
 
 ### 主要機能
