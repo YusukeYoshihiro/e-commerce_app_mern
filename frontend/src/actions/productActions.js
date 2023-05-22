@@ -235,7 +235,9 @@ export const createProductReview = (productId, review) => async (dispatch, getSt
         //         ? error.response.data.message
         //         : error.message,
         // })
-        const message = err.response && err.response.data.message ? err.response.data.message : err.message
+        const message = err.response && err.response.data.message
+            ? err.response.data.message
+            : err.message
         dispatch(product_create_review_fail(message))
     }
 }
