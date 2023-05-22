@@ -19,6 +19,11 @@ export const productReviewCreateSlice = createSlice({
     }
 })
 
-export const { product_create_review_request, product_create_review_success, product_create_review_fail, product_create_review_reset } = productReviewCreateSlice.actions
+export const { 
+    product_create_review_request, 
+    product_create_review_success, 
+    product_create_review_fail, 
+    product_create_review_reset 
+} = productReviewCreateSlice.actions
 
 export default productReviewCreateSlice.reducer
