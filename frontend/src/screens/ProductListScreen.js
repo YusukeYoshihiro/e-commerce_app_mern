@@ -5,8 +5,7 @@ import { Table, Button, Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
-import { listProducts, deleteProduct, createProduct } from '../actions/productActions';
-// import { PRODUCT_CREATE_RESET } from '../constants/productConstants';
+import { listProducts, deleteProduct } from '../actions/productActions';
 import { product_create_reset } from '../reducers/productReducers/productCreateSlice'
 import Paginate from '../components/Paginate';
 
@@ -68,9 +67,8 @@ const ProductListScreen = () => {
         }
     }
 
-    const createHandler = () => {
-        console.log('createHandler');
-        dispatch(createProduct());
+    const linkToCreate = () => {
+        navigate(`/admin/product/create`)
     }
 
     return (
@@ -80,7 +78,7 @@ const ProductListScreen = () => {
                     <h1>Products</h1>
                 </Col>
                 <Col className='text-end'>
-                    <Button className='my-3' onClick={createHandler}>
+                    <Button className='my-3' onClick={linkToCreate}>
                         <i className='fas fa-plus'></i> Create Product
                     </Button>
                 </Col>
